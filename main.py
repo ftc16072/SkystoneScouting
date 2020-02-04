@@ -2,6 +2,7 @@ import os
 import sqlite3
 import cherrypy
 from mako.lookup import TemplateLookup
+from teams import Team, Teams
 
 DB_STRING = os.path.join(os.path.dirname(__file__), 'data/database.sqlite3')
 
@@ -10,6 +11,7 @@ class Scouting(object):
     
     def __init__(self):
         self.lookup = TemplateLookup(directories = ['HtmlTemplates'], default_filters=['h'])
+        self.teams = Teams()
 
     def dbConnect(self):
         return sqlite3.connect(DB_STRING, detect_types=sqlite3.PARSE_DECLTYPES)
@@ -23,11 +25,10 @@ class Scouting(object):
 
     @cherrypy.expose
     def scouting(self):
-        teamDict = {
-            "Number": "Name",
-            "16072":"Quantum Quacks"
-        }
-        return self.template('scouting.mako', teamDict=teamDict)
+        with sqlite3.connect(DB_STRING) as connection:
+            teamList = self.teams.getTeamList(connection)
+
+        return self.template('scouting.mako', teamList=teamList)
 
 
 
