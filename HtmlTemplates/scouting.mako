@@ -9,11 +9,10 @@
 </head>
 
 <body>
-    <form action="/scouted">
+    <form action="scouted" method="post" enctype="multipart/form-data">
         <select>
-            <% print(teamList) %>
             % for team in teamList:
-                <option value=${team.teamId}> ${str(team.teamNumber) + "--" + team.teamName} </option>
+                <option name="team" value=${team.teamId}> ${str(team.teamNumber) + "--" + team.teamName} </option>
             % endfor
         </select>
         <fieldset> <legend>Auto</legend>
@@ -24,14 +23,14 @@
             <br/> <br/> <label for="stonesDelivered"> Stones delivered: </label><br/>
             <input type="number" name="stonesDelivered" step="1" value=0>
             <br/> <br/> <label for="waffle"> Repositioning: </label>
-            <input type="checkbox" name="waffle">
+            no: <input type="radio" name="waffle" value=false checked> yes: <input type="radio" name="waffle" value=true> 
 
-            <br/> <label for="park"> Parking: </label>
-            <input type="checkbox" name="park">
-        </fieldset>
+            <br/> <label for="autoPark"> Parking: </label>
+            no: <input type="radio" name="autoPark" value=false checked> yes: <input type="radio" name="autoPark" value=true>   
+         </fieldset>
         <fieldset> <legend>Tele-op</legend>
-            <label for="stonesDelivered"> Stones delivered: </label><br/>
-            <input type="number" name="stonesDelivered" step="1" value=0>
+            <label for="stonesDeliveredTele"> Stones delivered: </label><br/>
+            <input type="number" name="stonesDeliveredTele" step="1" value=0>
 
             <br/> <br/> <label for="stonesPlaced"> Stones placed: </label><br/>
             <input type="number" name="stonesPlaced" step="1" value=0>
@@ -41,12 +40,28 @@
 
         </fieldset>
         <fieldset> <legend>Endgame</legend>
-            <label for="waffle"> Repositioning: </label>
-            <input type="checkbox" name="waffle">
+            <label for="repositioning"> Repositioning: </label>
+            no: <input type="radio" name="repositioning" value=false checked> yes: <input type="radio" name="repositioning" value=true>   
 
             <br/> <br/> <label for="capstone"> Capstone Height: </label><br/>
             <input type="number" name="capstone" step="1" value=-1>
 
+            <br/><label for="parking"> Parking: </label>
+            no: <input type="radio" name="parking" value=false checked> yes: <input type="radio" name="parking" value=true>   
+
         </fieldset>
+
+        <fieldset> <legend> Other </legend>
+        <label for="notes">Notes:</label>
+        <input type="textarea" name="notes">
+
+        <br/><label for="penalties"> Did they cause a penalty? </label>
+            no: <input type="radio" name="penalties" value=false checked> yes: <input type="radio" name="penalties" value=true>   
+        
+        <br/><label for="broken"> Is anything broken? </label>
+            no: <input type="radio" name="broken" value=false checked> yes: <input type="radio" name="broken" value=true>   
+
+        </fieldset>
+        <input type=submit>
     </form>
 </body>

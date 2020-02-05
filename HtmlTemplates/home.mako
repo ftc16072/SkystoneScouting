@@ -10,7 +10,7 @@
     <table>
         <tr>
             <td> <a href="/scouting"> <button> Scout </button> </a> </td>
-            <td> <a href=""> <button> Info </button> </a> </td>
+            <td> <a href="/present"> <button> Info </button> </a> </td>
         </tr>
 
 
