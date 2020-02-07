@@ -1,0 +1,64 @@
+* {
+  font-size: inherit;
+  font-family: Segoe UI, Roboto, Droid Sans, Verdana, Tahoma, Serif;
+}
+
+body{
+	background-color: #FCFFF5;
+}
+
+body.Print{
+    background-color: white;
+}
+
+h1 { font-size: 34px; }
+h2 { font-size: 20px; }
+p  { font-size: 14px; }
+
+label {
+    /*display: inline-block; */
+    text-align: right;
+    width: 20%;
+}
+H1 {
+    text-align:center
+}
+table.matches {
+    border-collapse:collapse;
+    border: 1px solid black;
+    table-layout: fixed;
+    overflow: hidden;
+    width: 98%;   
+    margin-left: auto;
+    margin-right: auto;
+}
+table.matches th{
+    border: 1px solid black;
+    background-color: black;
+    color: #f9b813;
+}
+table.matches td{
+    border:1px solid black;
+}
+
+table.Minutes td.header{
+    text-align: center;
+    font-weight: bold;
+    text-transform: capitalize;
+    max-width: 1px; 
+    width: 100%;
+    text-overflow: ellipsis;
+}
+
+.image-container{
+    display:inline-block;
+    margin:0 auto;
+    padding:10px;
+}
+
+.image-container > img, .image-container > a > img{
+    max-width: 250px;
+    max-height: 250px;
+    height: auto;
+    width: auto;
+}

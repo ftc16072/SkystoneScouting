@@ -46,7 +46,17 @@ class Scouting(object):
         with sqlite3.connect(DB_STRING) as connection:
             matchList = self.matches.getAllMatches(connection)
             print(matchList)
-            
+        return self.template('display.mako', matchList=matchList)
+    
+    @cherrypy.expose
+    def getData(self, where):
+        with sqlite3.connect(DB_STRING) as connection:
+            if(where):
+                matchList = self.matches.getSelectedMatches(connection, where)
+            else:
+                matchList = self.matches.getAllMatches(connection)
+            print(matchList)
+        return self.template('display.mako', matchList=matchList)
 
 
 if __name__ == "__main__":

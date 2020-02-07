@@ -10,6 +10,7 @@
 
 <body>
     <form action="scouted" method="post" enctype="multipart/form-data">
+        <label for="team"> Team: </label>
         <select name="team">
             % for team in teamList:
                 <option value=${team.teamId}> ${str(team.teamNumber) + "--" + team.teamName} </option>
@@ -22,7 +23,7 @@
             <input type="radio" name="skystoneBonus" value="2">2
             <br/> <br/> <label for="stonesDelivered"> Stones delivered: </label><br/>
             <input type="number" name="stonesDelivered" step="1" value=0>
-            <br/> <br/> <label for="waffle"> Repositioning: </label>
+            <br/> <br/> <label for="waffle"> Foundation: </label>
             no: <input type="radio" name="waffle" value=false checked> yes: <input type="radio" name="waffle" value=true> 
 
             <br/> <label for="autoPark"> Parking: </label>
@@ -36,11 +37,11 @@
             <input type="number" name="stonesPlaced" step="1" value=0>
 
             <br/> <br/> <label for="height"> Height Stacked: </label><br/>
-            <input type="number" name="height" step="1" value=0> !-- it doesn't matter if they knock it down, what hight did they reach?
+            <input type="number" name="height" step="1" value=0> !-- it doesn't matter if they knock it down, what height did they reach?
 
         </fieldset>
         <fieldset> <legend>Endgame</legend>
-            <label for="repositioning"> Repositioning: </label>
+            <label for="repositioning"> Foundation: </label>
             no: <input type="radio" name="repositioning" value=false checked> yes: <input type="radio" name="repositioning" value=true>   
 
             <br/> <br/> <label for="capstone"> Capstone Height: </label><br/>
