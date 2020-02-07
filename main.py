@@ -37,14 +37,15 @@ class Scouting(object):
     def scouted(self, team, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken):
         with sqlite3.connect(DB_STRING) as connection:
             teamList = self.teams.getTeamList(connection)
-            self.matches.addMatch(team, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken)
+            self.matches.addMatch(connection, team, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken)
             
         return self.template('scouting.mako', teamList=teamList)
 
     @cherrypy.expose
     def present(self):
         with sqlite3.connect(DB_STRING) as connection:
-            return self.matches.getAllMatches(connection)
+            matchList = self.matches.getAllMatches(connection)
+            print(matchList)
             
 
 

@@ -10,9 +10,9 @@
 
 <body>
     <form action="scouted" method="post" enctype="multipart/form-data">
-        <select>
+        <select name="team">
             % for team in teamList:
-                <option name="team" value=${team.teamId}> ${str(team.teamNumber) + "--" + team.teamName} </option>
+                <option value=${team.teamId}> ${str(team.teamNumber) + "--" + team.teamName} </option>
             % endfor
         </select>
         <fieldset> <legend>Auto</legend>
@@ -58,8 +58,8 @@
         <br/><label for="penalties"> Did they cause a penalty? </label>
             no: <input type="radio" name="penalties" value=false checked> yes: <input type="radio" name="penalties" value=true>   
         
-        <br/><label for="broken"> Is anything broken? </label>
-            no: <input type="radio" name="broken" value=false checked> yes: <input type="radio" name="broken" value=true>   
+        <br/><label for="broken"> Did they break </label>
+            no: <input type="radio" name="broken" value=false checked> yes: <input type="radio" name="broken" value=true>      
 
         </fieldset>
         <input type=submit>

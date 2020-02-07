@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-def Match():
+class Match():
     def __init__(self, teamname, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken):
         self.teamname = teamname
         self.skystoneBonus = skystoneBonus
@@ -18,7 +18,7 @@ def Match():
         self.penalties = penalties
         self.broken = broken
 
-def Matches():
+class Matches():
     def createTable(self, dbConnection):
         dbConnection.execute("""
         CREATE TABLE Matches(
@@ -47,8 +47,8 @@ def Matches():
     def getAllMatches(self, dbConnection):
         matchList = []
         for row in dbConnection.execute("""
-        SELECT teams.number, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken
-        FROM Matches INNER JOIN ON Matches.teamid = Teams.id
+        SELECT Teams.number, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken
+        FROM Matches INNER JOIN Teams ON Matches.teamid = Teams.id
         """):
             matchList.append(Match(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13]))
 
@@ -60,7 +60,11 @@ def Matches():
 
 
 if __name__ == "__main__":
-    DB_STRING = os.path.join(os.path.dirname(__file__), 'data/database.sqlite3')
+    DB_STRING = os.path.join(os.path.dirname(__file__), 'data/testdatabase.sqlite3')
     matches = Matches()
     with sqlite3.connect(DB_STRING) as connection:
         matches.createTable(connection)
+        matches.addMatch(connection, 1,1,1,0,0,0,0,0,0,0,0,"",0,0)
+        matchList = matches.getAllMatches(connection)
+        for mathch in matchList:
+            print(mathch)

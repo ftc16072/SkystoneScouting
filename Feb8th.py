@@ -2,10 +2,11 @@ import sqlite3
 import os
 
 from teams import Teams
-from matches import Matches
+from matches import Matches, Match
 
 teams = Teams()
 matches = Matches()
+
 
 teamDict = {
     2901:"Purple Gears",
@@ -40,7 +41,7 @@ if __name__ == "__main__":
     with sqlite3.connect(DB_STRING) as connection:
         teams.createTable(connection)
         teams.setupTeams(teamDict, connection)
-        Matches().createTable(connection)
+        matches.createTable(connection)
         print(teams.getTeamList(connection))
 
 
