@@ -10,12 +10,18 @@
 
 <body>
     <form action="scouted" method="post" enctype="multipart/form-data">
+        <fieldset><legend>Info</legend>
         <label for="team"> Team: </label>
         <select name="team">
             % for team in teamList:
-                <option value=${team.teamId}> ${str(team.teamNumber) + "--" + team.teamName} </option>
+                <option value=${team.teamId}> ${str(team.teamNumber) + " -- " + team.teamName} </option>
             % endfor
-        </select>
+        </select> <br/>
+        <label for="matchNum"> Match Number: </label>
+        <input type="number" name="matchNum" step=1 value=${startingMatchNum}> <br/>
+        <label for="redAlliance">Alliance:</label>
+        Red: <input type="radio" name="redAlliance" value="true" checked> Blue: <input type="radio" name="redAlliance" value="false"
+        </fieldset>
         <fieldset> <legend>Auto</legend>
             <label for="skystoneBonus">Skystone Bonus:</label> <br/>
             <input type="radio" name="skystoneBonus" value="0" checked>0

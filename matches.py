@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 class Match():
-    def __init__(self, teamNum, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, matchId):
+    def __init__(self, teamNum, matchNum, alliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, matchId):
         self.teamNum = teamNum
         self.skystoneBonus = skystoneBonus
         self.stonesDelivered = stonesDelivered
@@ -25,6 +25,8 @@ class Matches():
         CREATE TABLE Matches(
             id INTEGER PRIMARY KEY,
             teamid INTEGER NOT NULL,
+            matchNum INTEGER NOT NULL,
+            alliance BOOLEAN NOT NULL,
             skystoneBonus INTEGER NOT NULL,
             stonesDelivered INTEGER NOT NULL, 
             waffle BOOLEAN NOT NULL, 
@@ -40,10 +42,10 @@ class Matches():
             broken BOOLEAN NOT NULL
         )""")
     
-    def addMatch(self, dbConnection, teamid, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken):
+    def addMatch(self, dbConnection, teamid, matchNum, redAlliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken):
         dbConnection.execute("""
-        INSERT INTO Matches (teamid, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-        """, (teamid, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken))
+        INSERT INTO Matches (teamid, matchNum, alliance skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        """, (teamid, matchNum, alliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken))
 
     def getAllMatches(self, dbConnection):
         matchList = []
@@ -58,7 +60,7 @@ class Matches():
     def getSelectedMatches(self, dbConnection, where):
         matchList = []
         text = f"""
-        SELECT Teams.number, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id
+        SELECT Teams.number, matchNum, alliance skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id
         FROM Matches INNER JOIN Teams ON Matches.teamid = Teams.id WHERE {where} ORDER BY Teams.number"""
         print(text)
         for row in dbConnection.execute(text):
