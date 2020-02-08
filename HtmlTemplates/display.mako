@@ -10,10 +10,16 @@
 
 <body>
     <table class="matches">
-        <tr class="heading"> <td> scouting form # </td> <td> Team #</td><td>skystoneBonus</td> <td>stonesDelivered</td><td>waffle</td><td>autoPark</td><td>teleStonesDeliver</td><td>stonesPlaced</td><td> height</td><td>repositioning</td><td>capstone</td><td>parking</td><td>notes</td><td>penalties</td><td>broken</td>
+        <tr class="heading"> <td> scouting form # </td> <td> Match #</td><td>Alliance</td> <td> Team #</td><td>skystoneBonus</td> <td>stonesDelivered</td><td>waffle</td><td>autoPark</td><td>teleStnsDliver</td><td>stonesPlaced</td><td> height</td><td>repositioning</td><td>capstone</td><td>parking</td><td>notes</td><td>penalties</td><td>broken</td>
         %for match in matchList:
             <tr>
                 <td>${match.matchId}</td>
+                <td>${match.matchNum}</td>
+                %if match.alliance:
+                    <td>Red</td>
+                %else:
+                    <td>Blue</td>
+                %endif
                 <td>${match.teamNum}</td>
                 <td>${match.skystoneBonus}</td>
                 <td>${match.stonesDelivered}</td>

@@ -4,6 +4,8 @@ import os
 class Match():
     def __init__(self, teamNum, matchNum, alliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, matchId):
         self.teamNum = teamNum
+        self.matchNum = matchNum
+        self.alliance = alliance
         self.skystoneBonus = skystoneBonus
         self.stonesDelivered = stonesDelivered
         self.waffle = waffle
