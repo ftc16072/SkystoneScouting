@@ -18,7 +18,7 @@
             % endfor
         </select> <br/>
         <label for="matchNum"> Match Number: </label>
-        <input type="number" name="matchNum" step=1 value=${startingMatchNum}> <br/>
+        <input type="number" name="matchNum" step=1 value=${startingMatchNum} max="30" min="0"> <br/>
         <label for="redAlliance">Alliance:</label>
         Red: <input type="radio" name="redAlliance" value="true" checked> Blue: <input type="radio" name="redAlliance" value="false">
         </fieldset>
@@ -28,9 +28,9 @@
             <input type="radio" name="skystoneBonus" value="1">1
             <input type="radio" name="skystoneBonus" value="2">2
             <br/> <br/> <label for="stonesDelivered"> Stones delivered: </label><br/>
-            <input type="number" name="stonesDelivered" step="1" value=0>
+            <input type="number" name="stonesDelivered" step="1" value=0 max="6" min="0">
             <br/> <br/> <label for="autoStonesPlaced"> Stones Placed: </label> <br/>
-            <input type="number" name="autoStonesPlaced" step=1 value=0>
+            <input type="number" name="autoStonesPlaced" step=1 value=0 max="6" min="0">
             <br/> <br/> <label for="waffle"> Foundation: </label>
             no: <input type="radio" name="waffle" value=false checked> yes: <input type="radio" name="waffle" value=true> 
 
@@ -45,7 +45,7 @@
             <input type="number" name="stonesPlaced" step="1" value=0>
 
             <br/> <br/> <label for="height"> Height Stacked: </label><br/>
-            <input type="number" name="height" step="1" value=0> !-- it doesn't matter if they knock it down, what height did they reach?
+            <input type="number" name="height" step="1" value=0 min="0"> !-- it doesn't matter if they knock it down, what height did they reach?
 
         </fieldset>
         <fieldset> <legend>Endgame</legend>
@@ -53,7 +53,7 @@
             no: <input type="radio" name="repositioning" value=false checked> yes: <input type="radio" name="repositioning" value=true>   
 
             <br/> <br/> <label for="capstone"> Capstone Height: </label><br/>
-            <input type="number" name="capstone" step="1" value=-1>
+            <input type="number" name="capstone" step="1" value=-1 min="-1"> !-- "-1" means no capstone
 
             <br/><label for="parking"> Parking: </label>
             no: <input type="radio" name="parking" value=false checked> yes: <input type="radio" name="parking" value=true>   
