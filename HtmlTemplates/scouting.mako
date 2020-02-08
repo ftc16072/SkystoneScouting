@@ -29,6 +29,8 @@
             <input type="radio" name="skystoneBonus" value="2">2
             <br/> <br/> <label for="stonesDelivered"> Stones delivered: </label><br/>
             <input type="number" name="stonesDelivered" step="1" value=0>
+            <br/> <br/> <label for="autoStonesPlaced"> Stones Placed: </label> <br/>
+            <input type="number" name="autoStonesPlaced" step=1 value=0>
             <br/> <br/> <label for="waffle"> Foundation: </label>
             no: <input type="radio" name="waffle" value=false checked> yes: <input type="radio" name="waffle" value=true> 
 

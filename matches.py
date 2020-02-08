@@ -2,12 +2,13 @@ import sqlite3
 import os
 
 class Match():
-    def __init__(self, teamNum, matchNum, alliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, matchId):
+    def __init__(self, teamNum, matchNum, alliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, matchId):
         self.teamNum = teamNum
         self.matchNum = matchNum
         self.alliance = alliance
         self.skystoneBonus = skystoneBonus
         self.stonesDelivered = stonesDelivered
+        self.autoStonesPlaced = autoStonesPlaced
         self.waffle = waffle
         self.autoPark = autoPark
         self.stonesDeliveredTele = stonesDeliveredTele
@@ -30,7 +31,8 @@ class Matches():
             matchNum INTEGER NOT NULL,
             alliance BOOLEAN NOT NULL,
             skystoneBonus INTEGER NOT NULL,
-            stonesDelivered INTEGER NOT NULL, 
+            stonesDelivered INTEGER NOT NULL,
+            autoStonesPlaced INTEGER NOT NULL, 
             waffle BOOLEAN NOT NULL, 
             autoPark BOOLEAN NOT NULL, 
             stonesDeliveredTele INTEGER NOT NULL, 
@@ -44,37 +46,31 @@ class Matches():
             broken BOOLEAN NOT NULL
         )""")
     
-    def addMatch(self, dbConnection, teamid, matchNum, redAlliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken):
+    def addMatch(self, dbConnection, teamid, matchNum, redAlliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken):
         dbConnection.execute("""
-        INSERT INTO Matches (teamid, matchNum, alliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-        """, (teamid, matchNum, redAlliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken))
+        INSERT INTO Matches (teamid, matchNum, alliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        """, (teamid, matchNum, redAlliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken))
 
     def getAllMatches(self, dbConnection):
         matchList = []
         for row in dbConnection.execute("""
-        SELECT Teams.number, matchNum, alliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id
+        SELECT Teams.number, matchNum, alliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id
         FROM Matches INNER JOIN Teams ON Matches.teamid = Teams.id ORDER BY Teams.number
         """):
-            matchList.append(Match(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13], row[14], row[15], row[16]))
+            matchList.append(Match(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13], row[14], row[15], row[16], row[17]))
         
         return matchList
 
     def getSelectedMatches(self, dbConnection, where):
         matchList = []
         text = f"""
-        SELECT Teams.number, matchNum, alliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id
+        SELECT Teams.number, matchNum, alliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id
         FROM Matches INNER JOIN Teams ON Matches.teamid = Teams.id WHERE {where} ORDER BY Teams.number"""
         print(text)
         for row in dbConnection.execute(text):
-            matchList.append(Match(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13], row[14], row[15], row[16]))
+            matchList.append(Match(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13], row[14], row[15], row[16], row[17]))
         
         return matchList
-
-    def runCommand(self, dbConnection, command, inputs=("","")):
-        if inputs:
-            return dbConnection.execute(command, inputs)
-        else:
-            return dbConnection.execute(command)
 
 
 if __name__ == "__main__":
