@@ -44,27 +44,27 @@ class Matches():
     
     def addMatch(self, dbConnection, teamid, matchNum, redAlliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken):
         dbConnection.execute("""
-        INSERT INTO Matches (teamid, matchNum, alliance skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-        """, (teamid, matchNum, alliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken))
+        INSERT INTO Matches (teamid, matchNum, alliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        """, (teamid, matchNum, redAlliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken))
 
     def getAllMatches(self, dbConnection):
         matchList = []
         for row in dbConnection.execute("""
-        SELECT Teams.number, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id
+        SELECT Teams.number, matchNum, alliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id
         FROM Matches INNER JOIN Teams ON Matches.teamid = Teams.id ORDER BY Teams.number
         """):
-            matchList.append(Match(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13], row[14]))
+            matchList.append(Match(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13], row[14], row[15], row[16]))
         
         return matchList
 
     def getSelectedMatches(self, dbConnection, where):
         matchList = []
         text = f"""
-        SELECT Teams.number, matchNum, alliance skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id
+        SELECT Teams.number, matchNum, alliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id
         FROM Matches INNER JOIN Teams ON Matches.teamid = Teams.id WHERE {where} ORDER BY Teams.number"""
         print(text)
         for row in dbConnection.execute(text):
-            matchList.append(Match(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13], row[14]))
+            matchList.append(Match(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13], row[14], row[15], row[16]))
         
         return matchList
 

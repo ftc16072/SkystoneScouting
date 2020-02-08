@@ -20,7 +20,7 @@
         <label for="matchNum"> Match Number: </label>
         <input type="number" name="matchNum" step=1 value=${startingMatchNum}> <br/>
         <label for="redAlliance">Alliance:</label>
-        Red: <input type="radio" name="redAlliance" value="true" checked> Blue: <input type="radio" name="redAlliance" value="false"
+        Red: <input type="radio" name="redAlliance" value="true" checked> Blue: <input type="radio" name="redAlliance" value="false">
         </fieldset>
         <fieldset> <legend>Auto</legend>
             <label for="skystoneBonus">Skystone Bonus:</label> <br/>

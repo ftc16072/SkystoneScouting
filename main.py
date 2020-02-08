@@ -39,7 +39,7 @@ class Scouting(object):
             teamList = self.teams.getTeamList(connection)
             self.matches.addMatch(connection, team, matchNum, redAlliance, skystoneBonus, stonesDelivered, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken)
             
-        return self.template('scouting.mako', teamList=teamList, startingMatchNum=matchNum+1)
+        return self.template('scouting.mako', teamList=teamList, startingMatchNum=int(matchNum)+1)
 
     @cherrypy.expose
     def present(self):
