@@ -12,14 +12,18 @@
             <td> <a href="/scouting"> <button> Scout </button> </a> </td>
             <td> <a href="/present"> <button> Info </button> </a> </td>
         </tr>
-        <tr>
+    </table>
             <form  action="getData" method="post" enctype="multipart/form-data">
-                <td>
-                     Where: <input type="text-area" name="where">
+                     <select name="fieldName">
+                        %for field in fieldList:
+                            <option value=${field}> ${field} </option>
+                        %endfor
+                     </select>
+                     <select name="operator">
+                        %for operator in ["=", ">", "<", ">=", "<="]:
+                            <option value=${operator}> ${operator} </option>
+                        %endfor
+                    </select>
+                    <input type="text-area" name="text">
                      <br/> <input type="submit">
-                </td>
             </form>
-        </tr>
-
-
-

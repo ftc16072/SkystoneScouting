@@ -23,7 +23,9 @@ class Scouting(object):
 
     @cherrypy.expose
     def index(self):
-        return self.template('home.mako')
+        fieldList = ["Matches.id","Teams.number","matchNum","alliance","skystoneBonus","stonesDelivered","waffle","autoPark","stonesDeliveredTele","stonesPlaced","height","repositioning","capstone","parking","notes","penalties","broken"]
+
+        return self.template('home.mako', fieldList=fieldList)
 
     @cherrypy.expose
     def scouting(self):
@@ -49,10 +51,20 @@ class Scouting(object):
         return self.template('display.mako', matchList=matchList)
     
     @cherrypy.expose
-    def getData(self, where):
+    def getData(self, fieldName, operator, text):
+        combined = ""
+        try:
+            int(text)
+            combined = fieldName + operator + text
+        except ValueError:
+            combined = fieldName + operator + "'" + text + "'"
+
+          
+        print(combined)       
+
         with sqlite3.connect(DB_STRING) as connection:
-            if(where):
-                matchList = self.matches.getSelectedMatches(connection, where)
+            if(combined):
+                matchList = self.matches.getSelectedMatches(connection, combined)
             else:
                 matchList = self.matches.getAllMatches(connection)
             print(matchList)

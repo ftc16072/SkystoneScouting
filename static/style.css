@@ -27,7 +27,6 @@ table.matches {
     border-collapse:collapse;
     border: 1px solid black;
     table-layout: fixed;
-    overflow: hidden;
     width: 98%;   
     margin-left: auto;
     margin-right: auto;
@@ -39,15 +38,7 @@ table.matches th{
 }
 table.matches td{
     border:1px solid black;
-}
-
-table.Minutes td.header{
-    text-align: center;
-    font-weight: bold;
-    text-transform: capitalize;
-    max-width: 1px; 
-    width: 100%;
-    text-overflow: ellipsis;
+    overflow: auto;
 }
 
 .image-container{
