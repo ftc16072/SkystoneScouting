@@ -10,7 +10,9 @@
 
 <body>
     <table class="matches">
-        <tr class="heading"> <td> scouting form # </td> <td> Match #</td><td>Alliance</td> <td> Team #</td><td>skystoneBonus</td> <td>stonesDelivered</td> <td>auto stones placed:</td><td>waffle</td><td>autoPark</td><td>teleStnsDliver</td><td>stonesPlaced</td><td> height</td><td>repositioning</td><td>capstone</td><td>parking</td><td>notes</td><td>penalties</td><td>broken</td>
+        <tr class="heading"> <td> scouting form # </td> <td> Match #</td><td>Alliance</td> <td> Team #</td><td>skystoneBonus</td> <td>stonesDelivered</td> 
+        <td>auto stones placed:</td><td>waffle</td><td>autoPark</td><td>teleStnsDliver</td><td>stonesPlaced</td><td> height</td><td>repositioning</td>
+        <td>capstone</td><td>parking</td><td>notes</td><td>penalties</td><td>broken</td><td>Submited By:</td>
         %for match in matchList:
             <tr>
                 <td>${match.matchId}</td>
@@ -35,6 +37,7 @@
                 <td>${match.notes}</td>
                 <td>${match.penalties}</td>
                 <td>${match.broken}</td>
+                <td>${match.submitedByNum}</td>
             </tr>
         %endfor
     </table>

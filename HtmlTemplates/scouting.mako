@@ -10,7 +10,7 @@
 
 <body>
     <form action="scouted" method="post" enctype="multipart/form-data">
-        <fieldset><legend>Info</legend>
+        <fieldset><legend>Match Info</legend>
         <label for="team"> Team: </label>
         <select name="team">
             % for team in teamList:
@@ -68,7 +68,15 @@
             no: <input type="radio" name="penalties" value=false checked> yes: <input type="radio" name="penalties" value=true>   
         
         <br/><label for="broken"> Did they break </label>
-            no: <input type="radio" name="broken" value=false checked> yes: <input type="radio" name="broken" value=true>      
+            no: <input type="radio" name="broken" value=false checked> yes: <input type="radio" name="broken" value=true>
+        
+        <br/>
+        <label for="submitedById">Submited By:</label>
+         <select name="submitedById">
+            % for team in teamList:
+                <option value=${team.teamNumber}> ${str(team.teamNumber) + " -- " + team.teamName} </option>
+            % endfor
+        </select>      
 
         </fieldset>
         <input type=submit>
