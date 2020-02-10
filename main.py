@@ -23,8 +23,7 @@ class Scouting(object):
 
     @cherrypy.expose
     def index(self):
-        fieldList = ["Matches.id","Teams.number","matchNum","alliance","skystoneBonus","stonesDelivered","waffle","autoPark","stonesDeliveredTele","stonesPlaced","height","repositioning","capstone","parking","notes","penalties","broken", "submitedByNum"]
-
+        fieldList = ["Matches.id","Teams.number","matchNum","alliance","skystoneBonus","stonesDelivered","waffle","autoPark","stonesDeliveredTele","stonesPlaced","height","repositioning","capstone","parking","notes","penalties","broken", "submitedByNum"]    
         return self.template('home.mako', fieldList=fieldList)
 
     @cherrypy.expose
@@ -69,7 +68,6 @@ class Scouting(object):
                 matchList = self.matches.getAllMatches(connection)
             print(matchList)
         return self.template('display.mako', matchList=matchList)
-
 
 if __name__ == "__main__":
     cherrypy.quickstart(Scouting(), config='development.conf')

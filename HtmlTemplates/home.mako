@@ -7,10 +7,9 @@
 </head>
 
 <body>
-    <table>
+  <table>
         <tr>
-            <td> <a href="/scouting"> <button> Scout </button> </a> </td>
-            <td> <a href="/present"> <button> Info </button> </a> </td>
+            <td> <a href="/present"> <button> All data </button> </a> </td>
         </tr>
     </table>
             <form  action="getData" method="post" enctype="multipart/form-data">
@@ -27,3 +26,4 @@
                     <input type="text-area" name="text">
                      <br/> <input type="submit">
             </form>
+</body>
