@@ -1,12 +1,15 @@
 import os
+import base64
+from io import BytesIO
 import sqlite3
 import cherrypy
+from matplotlib.pyplot import Figure
 from mako.lookup import TemplateLookup
 from teams import Team, Teams
 from matches import Match, Matches
+from plots import Plots
 
 DB_STRING = os.path.join(os.path.dirname(__file__), 'data/database.sqlite3')
-
 
 class Scouting(object):
     
@@ -14,6 +17,7 @@ class Scouting(object):
         self.lookup = TemplateLookup(directories = ['HtmlTemplates'], default_filters=['h'])
         self.teams = Teams()
         self.matches = Matches()
+        self.plots = Plots()
 
     def dbConnect(self):
         return sqlite3.connect(DB_STRING, detect_types=sqlite3.PARSE_DECLTYPES)
@@ -24,7 +28,10 @@ class Scouting(object):
     @cherrypy.expose
     def index(self):
         fieldList = ["Matches.id","Teams.number","matchNum","alliance","skystoneBonus","stonesDelivered","waffle","autoPark","stonesDeliveredTele","stonesPlaced","height","repositioning","capstone","parking","notes","penalties","broken", "submitedByNum"]    
-        return self.template('home.mako', fieldList=fieldList)
+        with sqlite3.connect(DB_STRING) as connection:   
+            data = self.plots.fullMatches(self.matches.getAllMatches(connection))
+        return self.template('home.mako', fieldList=fieldList, imageData=data)
+
 
     @cherrypy.expose
     def scouting(self):
@@ -50,7 +57,7 @@ class Scouting(object):
         return self.template('display.mako', matchList=matchList)
     
     @cherrypy.expose
-    def getData(self, fieldName, operator, text):
+    def getData(self, fieldName, operator, text, orderBy):
         combined = ""
         try:
             int(text)
@@ -63,7 +70,7 @@ class Scouting(object):
 
         with sqlite3.connect(DB_STRING) as connection:
             if(combined):
-                matchList = self.matches.getSelectedMatches(connection, combined)
+                matchList = self.matches.getSelectedMatches(connection, combined, orderBy)
             else:
                 matchList = self.matches.getAllMatches(connection)
             print(matchList)

@@ -22,6 +22,10 @@ class Match():
         self.broken = broken
         self.matchId = matchId
         self.submitedByNum = submitedByNum
+        self.autoScore = (8 * skystoneBonus) + (2 * stonesDelivered) + (4 * autoStonesPlaced) + (10 if waffle else 0) + (5 if autoPark else 0)
+        self.teleOpScore = (stonesDeliveredTele) + (stonesPlaced) + (2 * height)
+        self.endGameScore = (10 if repositioning else 0) + ((capstone) + 5 if capstone != -1 else 0) + (5 if parking else 0)
+        self.score = self.autoScore + self.teleOpScore + self.endGameScore
 
 class Matches():
     def createTable(self, dbConnection):
@@ -70,12 +74,12 @@ class Matches():
         FROM Matches INNER JOIN Teams ON Matches.teamid = Teams.id ORDER BY Teams.number"""
         return self.getMatches(dbConnection, text)
 
-    def getSelectedMatches(self, dbConnection, where):
+    def getSelectedMatches(self, dbConnection, where, orderBy):
         matchList = []
         text = f"""
         SELECT Teams.number, matchNum, alliance, skystoneBonus,
         stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id, submitedByNum
-        FROM Matches INNER JOIN Teams ON Matches.teamid = Teams.id WHERE {where} ORDER BY Teams.number"""
+        FROM Matches INNER JOIN Teams ON Matches.teamid = Teams.id WHERE {where} ORDER BY {orderBy}"""
         return self.getMatches(dbConnection, text)
 
 

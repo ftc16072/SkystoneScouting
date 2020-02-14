@@ -24,6 +24,17 @@
                         %endfor
                     </select>
                     <input type="text-area" name="text">
+                    ORDER BY
+                     <select name="orderBy">
+                        %for field in fieldList:
+                            <% selected = "" %>
+                            <% if field == "Teams.number":
+                                    selected = "selected"
+                            %>
+                            <option value=${field} ${selected}> ${field} </option>
+                        %endfor
+                     </select>
                      <br/> <input type="submit">
             </form>
 </body>
+<img src='data:image/png;base64,${imageData}'/>
