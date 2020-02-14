@@ -3,9 +3,11 @@ import os
 
 from teams import Teams
 from matches import Matches, Match
+from pitScouting import pitScouting
 
 teams = Teams()
 matches = Matches()
+pitScouting = pitScouting()
 
 
 teamDict = {
@@ -31,6 +33,7 @@ teamDict = {
     9993:"Storm Bots",
     11528:"Bots of Prey",
     12584:"Not Yet Determined",
+    12828:"Critical Overload",
     13597:"Yadkin Valley Innovators",
     13735:"∏∆S (Pirates) FTC",
     14163:"The Pitt Crew",
@@ -62,5 +65,6 @@ if __name__ == "__main__":
         teams.setupTeams(teamDict, connection)
         matches.createTable(connection)
         print(teams.getTeamList(connection))
+        pitScouting.createTable(connection)
 
 
