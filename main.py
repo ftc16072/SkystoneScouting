@@ -30,7 +30,8 @@ class Scouting(object):
         fieldList = ["Matches.id","Teams.number","matchNum","alliance","skystoneBonus","stonesDelivered","waffle","autoPark","stonesDeliveredTele","stonesPlaced","height","repositioning","capstone","parking","notes","penalties","broken", "submitedByNum"]    
         with sqlite3.connect(DB_STRING) as connection:   
             data = self.plots.fullMatches(self.matches.getAllMatches(connection))
-        return self.template('home.mako', fieldList=fieldList, imageData=data)
+            teamList = self.teams.getTeamList(connection)
+        return self.template('home.mako', fieldList=fieldList, imageData=data, teamList=teamList)
 
 
     @cherrypy.expose
@@ -75,6 +76,18 @@ class Scouting(object):
                 matchList = self.matches.getAllMatches(connection)
             print(matchList)
         return self.template('display.mako', matchList=matchList)
+
+    @cherrypy.expose
+    def teamPage(self, teamId):
+        with sqlite3.connect(DB_STRING) as connection:
+            broken = self.matches.isTeamBroken(connection, teamId)
+            penalised = self.matches.hasTeamBeenPenalized(connection, teamId)
+            print(broken)
+            team = self.teams.getTeamfromID(connection, teamId)
+            matchList = self.matches.getSelectedMatches(connection, f"Teams.number={team.teamNumber}", "matchNum")
+        return self.template('teamPage.mako', matchList=matchList, team=team, broken=broken, penalised=penalised)
+    
+
 
 if __name__ == "__main__":
     cherrypy.quickstart(Scouting(), config='development.conf')

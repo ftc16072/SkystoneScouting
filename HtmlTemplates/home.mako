@@ -9,7 +9,16 @@
 <body>
   <table>
         <tr>
-            <td> <a href="/present"> <button> All data </button> </a> </td>
+            <td> <a href="/present"> <button> All data </button> </a>
+        </tr>
+        <tr> 
+            </td> <td>View Team Page:<td/>
+            <td> <form action="teamPage" method="post" enctype="multipart/form-data">
+            <select name="teamId">
+                %for team in teamList:
+                    <option value=${team.teamId}> ${team.teamNumber} -- ${team.teamName} </option>
+                %endfor
+            <input type="submit"> </form>
         </tr>
     </table>
             <form  action="getData" method="post" enctype="multipart/form-data">

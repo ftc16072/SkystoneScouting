@@ -32,12 +32,12 @@ class Teams():
         return teamList
 
     def getTeamfromID(self, dbConnection, teamId):
-        row = dbConnection.execute("SELECT number, name, id FROM Teams WHERE id = ? (?,)", (teamId,))
-        return Team(row[0], row[1],row[2])
+        for row in dbConnection.execute("SELECT number, name, id FROM Teams WHERE id=?", (teamId,)):
+            return Team(row[0], row[1],row[2])
     
     def getTeamfromNum(self, dbConnection, teamNum):
-        row = dbConnection.execute("SELECT number, name, id FROM Teams WHERE number = ? (?,)", (teamNum,))
-        return Team(row[0], row[1],row[2])
+        for row in dbConnection.execute("SELECT number, name, id FROM Teams WHERE number=?", (teamNum,)):
+            return Team(row[0], row[1],row[2])
     
     def setupTeams(self, teamDict, dbConnection):
         for number, name in teamDict.items():

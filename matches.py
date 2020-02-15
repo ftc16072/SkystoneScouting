@@ -1,5 +1,6 @@
 import sqlite3
 import os
+from teams import Teams, Team
 
 class Match():
     def __init__(self, teamNum, matchNum, alliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, matchId, submitedByNum):
@@ -28,6 +29,9 @@ class Match():
         self.score = self.autoScore + self.teleOpScore + self.endGameScore
 
 class Matches():
+    def __init__(self):
+        self.teams = Teams()
+
     def createTable(self, dbConnection):
         dbConnection.execute("""
         CREATE TABLE Matches(
@@ -81,7 +85,20 @@ class Matches():
         stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id, submitedByNum
         FROM Matches INNER JOIN Teams ON Matches.teamid = Teams.id WHERE {where} ORDER BY {orderBy}"""
         return self.getMatches(dbConnection, text)
+    
+    def isTeamBroken(self, dbConnection, teamid):
+        findBrokenText = f"SELECT broken FROM matches WHERE teamid={teamid} ORDER BY matchNum"
+        for row in dbConnection.execute(findBrokenText):
+            broken = row[0]
+        return broken
 
+    def hasTeamBeenPenalized(self, dbConnection, teamid):
+        penatlies = False
+        findPenaltyText = f"SELECT penalties FROM matches WHERE teamid={teamid} ORDER BY matchNum"
+        for row in dbConnection.execute(findPenaltyText):
+            if row[0] == "true":
+                penatlies = True
+        return penatlies
 
 if __name__ == "__main__":
     DB_STRING = os.path.join(os.path.dirname(__file__), 'data/testdatabase.sqlite3')
