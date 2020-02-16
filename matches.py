@@ -10,22 +10,22 @@ class Match():
         self.skystoneBonus = skystoneBonus
         self.stonesDelivered = stonesDelivered
         self.autoStonesPlaced = autoStonesPlaced
-        self.waffle = waffle
-        self.autoPark = autoPark
+        self.waffle = True if (waffle=="true") else False
+        self.autoPark = True if (autoPark=="true") else False 
         self.stonesDeliveredTele = stonesDeliveredTele
         self.stonesPlaced = stonesPlaced
         self.height = height
-        self.repositioning = repositioning
+        self.repositioning = True if (repositioning=="true") else False
         self.capstone = capstone
-        self.parking = parking
+        self.parking = True if (parking=="true") else False
         self.notes = notes
-        self.penalties = penalties
-        self.broken = broken
+        self.penalties = True if (penalties=="true") else False
+        self.broken = True if (broken=="true") else False
         self.matchId = matchId
         self.submitedByNum = submitedByNum
-        self.autoScore = (8 * skystoneBonus) + (2 * stonesDelivered) + (4 * autoStonesPlaced) + (10 if waffle else 0) + (5 if autoPark else 0)
+        self.autoScore = (8 * skystoneBonus) + (2 * stonesDelivered) + (4 * autoStonesPlaced) + (10 if self.waffle else 0) + (5 if self.autoPark else 0)
         self.teleOpScore = (stonesDeliveredTele) + (stonesPlaced) + (2 * height)
-        self.endGameScore = (10 if repositioning else 0) + ((capstone) + 5 if capstone != -1 else 0) + (5 if parking else 0)
+        self.endGameScore = (10 if self.repositioning else 0) + ((capstone) + 5 if capstone != -1 else 0) + (5 if self.parking else 0)
         self.score = self.autoScore + self.teleOpScore + self.endGameScore
 
 class Matches():
@@ -87,10 +87,11 @@ class Matches():
         return self.getMatches(dbConnection, text)
     
     def isTeamBroken(self, dbConnection, teamid):
+        broken = ""
         findBrokenText = f"SELECT broken FROM matches WHERE teamid={teamid} ORDER BY matchNum"
         for row in dbConnection.execute(findBrokenText):
             broken = row[0]
-        return broken
+        return (True if broken == "true" else False) if (broken) else False
 
     def hasTeamBeenPenalized(self, dbConnection, teamid):
         penatlies = False
@@ -99,6 +100,43 @@ class Matches():
             if row[0] == "true":
                 penatlies = True
         return penatlies
+
+    def getTeamInfo(self, dbConnection, teamid):
+        infoDict = {
+            "avgAuto":0,
+            "avgTele":0,
+            "avgEnd":0,
+            "percentBroken":0,
+            "matchScores":[]
+        }
+        autoTot = 0
+        teleTot = 0
+        endTot = 0
+        brokenTot = 0
+        totalMatches = 0
+        matchScores = []
+        matchList = self.getSelectedMatches(dbConnection, f"teamid={teamid}", "matchNum")
+        for match in matchList:
+            print("-----------")
+            totalMatches += 1
+            autoTot += match.autoScore
+            print(match.autoScore)
+            teleTot += match.teleOpScore
+            print(match.teleOpScore)
+            endTot += match.endGameScore
+            print(match.endGameScore)
+            matchScores.append(match.autoScore + match.teleOpScore + match.endGameScore)
+            brokenTot += 1 if match.broken else 0
+        if totalMatches > 0:
+            infoDict["avgAuto"] = round(autoTot / totalMatches, 1)
+            infoDict["avgTele"] = round(teleTot / totalMatches, 1)
+            infoDict["avgEnd"] = round(endTot / totalMatches, 1)
+            infoDict["percentBroken"] = round(brokenTot / totalMatches, 1)
+            infoDict["matchScores"] = matchScores
+        return infoDict
+
+
+
 
 if __name__ == "__main__":
     DB_STRING = os.path.join(os.path.dirname(__file__), 'data/testdatabase.sqlite3')

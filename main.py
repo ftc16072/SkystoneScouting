@@ -82,10 +82,12 @@ class Scouting(object):
         with sqlite3.connect(DB_STRING) as connection:
             broken = self.matches.isTeamBroken(connection, teamId)
             penalised = self.matches.hasTeamBeenPenalized(connection, teamId)
+            infoDict = self.matches.getTeamInfo(connection, teamId)
+            matchHist = self.plots.histogram(infoDict["matchScores"])
             print(broken)
             team = self.teams.getTeamfromID(connection, teamId)
             matchList = self.matches.getSelectedMatches(connection, f"Teams.number={team.teamNumber}", "matchNum")
-        return self.template('teamPage.mako', matchList=matchList, team=team, broken=broken, penalised=penalised)
+        return self.template('teamPage.mako', matchList=matchList, team=team, broken=broken, penalised=penalised, infoDict=infoDict, matchHist=matchHist)
     
 
 
