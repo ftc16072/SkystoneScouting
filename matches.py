@@ -27,6 +27,7 @@ class Match():
         self.teleOpScore = (stonesDeliveredTele) + (stonesPlaced) + (2 * height)
         self.endGameScore = (10 if self.repositioning else 0) + ((capstone) + 5 if capstone != -1 else 0) + (5 if self.parking else 0)
         self.score = self.autoScore + self.teleOpScore + self.endGameScore
+        self.blnAuto = False
 
 class Matches():
     def __init__(self):
@@ -107,32 +108,76 @@ class Matches():
             "avgTele":0,
             "avgEnd":0,
             "percentBroken":0,
-            "matchScores":[]
+            "matchScores":[],
+            "avgTeleBlocks":0,
+            "avgBlocksDeliverdFerryMatches":0,
+            "avgHeight":0,
+            "avgHeightStackingMatches":0,
+            "avgPlaced":0,
+            "avgPlacedStackingMatches":0,
+            "wafflePercent":0,
+            "avgSkystoneBonus":0,
+            "avgStonesDelivered":0,
+            "avgStonesPlaced":0,
+            "autoParkedPercent":0,
+            "parkedPercent":0,
+            "repositioningPercent":0,
+            "avgCapstone":0
         }
         autoTot = 0
         teleTot = 0
         endTot = 0
         brokenTot = 0
         totalMatches = 0
+        TeleBlocks = 0
+        height = 0
+        placed = 0
+        wafflePercent = 0
+        skystoneBonus = 0
+        stonesDelivered = 0
+        stonesPlaced = 0
+        autoParkedPercent = 0
+        parkedPercent = 0
+        repositioningPercent = 0
+        capstone = 0
         matchScores = []
         matchList = self.getSelectedMatches(dbConnection, f"teamid={teamid}", "matchNum")
         for match in matchList:
-            print("-----------")
             totalMatches += 1
             autoTot += match.autoScore
-            print(match.autoScore)
             teleTot += match.teleOpScore
-            print(match.teleOpScore)
             endTot += match.endGameScore
-            print(match.endGameScore)
             matchScores.append(match.autoScore + match.teleOpScore + match.endGameScore)
             brokenTot += 1 if match.broken else 0
+            TeleBlocks += match.stonesDeliveredTele
+            height += match.height
+            placed += match.stonesPlaced
+            wafflePercent += match.waffle
+            skystoneBonus += match.skystoneBonus
+            stonesDelivered += match.stonesDelivered
+            stonesPlaced += match.autoStonesPlaced
+            autoParkedPercent += match.autoPark
+            parkedPercent += match.parking
+            repositioningPercent += match.repositioning
+            capstone += match.capstone
         if totalMatches > 0:
             infoDict["avgAuto"] = round(autoTot / totalMatches, 1)
             infoDict["avgTele"] = round(teleTot / totalMatches, 1)
             infoDict["avgEnd"] = round(endTot / totalMatches, 1)
             infoDict["percentBroken"] = round(brokenTot / totalMatches, 1)
             infoDict["matchScores"] = matchScores
+            infoDict["avgTeleBlocks"] = round(TeleBlocks / totalMatches, 1)
+            infoDict["avgHeight"] = round(height / totalMatches, 1)
+            infoDict["avgPlaced"] = round(placed / totalMatches, 1)
+            infoDict["wafflePercent"] = round(wafflePercent / totalMatches, 1)
+            infoDict["avgSkystoneBonus"] = round(skystoneBonus / totalMatches, 1)
+            infoDict["avgStonesDelivered"] = round(stonesDelivered / totalMatches, 1)
+            infoDict["avgStonesPlaced"] = round(stonesPlaced / totalMatches, 1)
+            infoDict["autoParkedPercent"] = round(autoParkedPercent / totalMatches, 1)
+            infoDict["parkedPercent"] = round(parkedPercent / totalMatches, 1)
+            infoDict["repositioningPercent"] = round(repositioningPercent / totalMatches, 1)
+            infoDict["avgCapstone"] = round(capstone / totalMatches, 1)
+        
         return infoDict
 
 
