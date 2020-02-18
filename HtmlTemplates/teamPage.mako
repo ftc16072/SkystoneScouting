@@ -68,9 +68,9 @@
                             <td>
                                 <h3 style="text-align:center;"> Endgame: </h3>
                                 <ul>
-                                    <li> Percent parked: ${infoDict["parkedPercent"] * 100}% </li>
-                                    <li> Percent waflle: ${infoDict["repositioningPercent"] * 100}% </li>
-                                    <li> Average capstone: ${infoDict["avgCapstone"]} </li>
+                                    <li> Percent parked: <b>${infoDict["parkedPercent"] * 100}%</b> </li>
+                                    <li> Percent waflle: <b>${infoDict["repositioningPercent"] * 100}%</b> </li>
+                                    <li> Average capstone: <b>${"Not Placed" if infoDict["avgCapstone"] < 0 else infoDict["avgCapstone"]}</b> </li>
                                 </ul>
                             </td>
                         </tr>
@@ -78,11 +78,11 @@
                 </td>
                 <td>
                     <table class="matches">
-                        <tr> <td> # </td> <td> round Num </td> <td> Bot was </td> <td> certenty </td> <td> Auto? </td></tr>
+                        <tr> <td> # </td> <td> round Num </td> <td> Bot was </td> <td> Auto? </td></tr>
                         <% numIncrement = 0 %>
                         %for match in matchList:
                             <% numIncrement += 1 %>
-                            <tr> <td> ${numIncrement} </td> <td> ${match.matchNum}</td> <td> </td> <td> </td> <td> </td>
+                            <tr> <td> ${numIncrement} </td> <td> ${match.matchNum}</td> <td>${match.role} </td> <td> ${match.blnAuto}</td>
                         %endfor
                     </table>
                 </td>

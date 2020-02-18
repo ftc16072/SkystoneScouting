@@ -2,6 +2,24 @@ import sqlite3
 import os
 from teams import Teams, Team
 
+def getTeamRole(match):
+    ferried = match.stonesDeliveredTele
+    stacking = match.stonesPlaced
+    role = ""
+    if (ferried == 0) and (stacking > 0):
+        role = "Stacking"
+    elif (ferried > 0) and (stacking == 0):
+        role = "Ferrying"
+    elif (ferried == 0) and (stacking == 0):
+        role = "None"
+    elif abs(ferried - stacking) <= 1:
+        role = "Both"
+    else:
+        role = f"inconclusive stacking:{stacking} ferried:{ferried}"
+    return role
+    
+
+
 class Match():
     def __init__(self, teamNum, matchNum, alliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, matchId, submitedByNum):
         self.teamNum = teamNum
@@ -27,7 +45,8 @@ class Match():
         self.teleOpScore = (stonesDeliveredTele) + (stonesPlaced) + (2 * height)
         self.endGameScore = (10 if self.repositioning else 0) + ((capstone) + 5 if capstone != -1 else 0) + (5 if self.parking else 0)
         self.score = self.autoScore + self.teleOpScore + self.endGameScore
-        self.blnAuto = False
+        self.blnAuto = True if self.autoScore > 0 else False
+        self.role = getTeamRole(self)
 
 class Matches():
     def __init__(self):
