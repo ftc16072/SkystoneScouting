@@ -83,11 +83,11 @@ class Scouting(object):
             broken = self.matches.isTeamBroken(connection, teamId)
             penalised = self.matches.hasTeamBeenPenalized(connection, teamId)
             infoDict = self.matches.getTeamInfo(connection, teamId)
-            matchHist = self.plots.histogram(infoDict["matchScores"])
+            matchBar = self.plots.bar(infoDict["matchScores"])
             print(broken)
             team = self.teams.getTeamfromID(connection, teamId)
             matchList = self.matches.getSelectedMatches(connection, f"Teams.number={team.teamNumber}", "matchNum")
-        return self.template('teamPage.mako', matchList=matchList, team=team, broken=broken, penalised=penalised, infoDict=infoDict, matchHist=matchHist)
+        return self.template('teamPage.mako', matchList=matchList, team=team, broken=broken, penalised=penalised, infoDict=infoDict, matchBar=matchBar)
     
 
 

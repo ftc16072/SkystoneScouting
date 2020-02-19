@@ -30,7 +30,7 @@
             match scores: ${infoDict["matchScores"]}
         </div>
         <div>
-            <img src='data:image/png;base64,${matchHist}'/>
+            <img src='data:image/png;base64,${matchBar}'/>
         </div>
     </div>
     <div>
@@ -82,7 +82,7 @@
                         <% numIncrement = 0 %>
                         %for match in matchList:
                             <% numIncrement += 1 %>
-                            <tr> <td> ${numIncrement} </td> <td> ${match.matchNum}</td> <td>${match.role} </td> <td> ${match.blnAuto}</td>
+                            <tr> <td> ${numIncrement} </td> <td> ${match.matchNum}</td> <td>${match.role} </td> <td> ${"Yes" if match.blnAuto else "No"}</td>
                         %endfor
                     </table>
                 </td>
@@ -93,6 +93,10 @@
         <tr class="heading"> <td> scouting form # </td> <td> Match #</td><td>Alliance</td> <td> Team #</td><td>skystoneBonus</td> <td>stonesDelivered</td> 
         <td>auto stones placed:</td><td>waffle</td><td>autoPark</td><td>teleStnsDliver</td><td>stonesPlaced</td><td> height</td><td>repositioning</td>
         <td>capstone</td><td>parking</td><td>notes</td><td>penalties</td><td>broken</td><td>Submited By:</td>
+        <%
+           def yOrn(x):
+              return "Y" if x else "N"
+        %>
         %for match in matchList:
             <tr>
                 <td>${match.matchId}</td>
@@ -106,17 +110,17 @@
                 <td>${match.skystoneBonus}</td>
                 <td>${match.stonesDelivered}</td>
                 <td>${match.autoStonesPlaced}
-                <td>${match.waffle}</td>
-                <td>${match.autoPark}</td>
+                <td>${yOrn(match.waffle)}</td>
+                <td>${yOrn(match.autoPark)}</td>
                 <td>${match.stonesDeliveredTele}</td>
                 <td>${match.stonesPlaced}</td>
                 <td>${match.height}</td>
-                <td>${match.repositioning}</td>
+                <td>${yOrn(match.repositioning)}</td>
                 <td>${match.capstone}</td>
-                <td>${match.parking}</td>
+                <td>${yOrn(match.parking)}</td>
                 <td>${match.notes}</td>
-                <td>${match.penalties}</td>
-                <td>${match.broken}</td>
+                <td>${yOrn(match.penalties)}</td>
+                <td>${yOrn(match.broken)}</td>
                 <td>${match.submitedByNum}</td>
             </tr>
         %endfor
