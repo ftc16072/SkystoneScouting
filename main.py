@@ -43,7 +43,7 @@ class Scouting(object):
 
 
     @cherrypy.expose
-    def scouted(self, team, matchNum, redAlliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, submitedById):
+    def scouted(self, team, matchNum, redAlliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, submitedById, knocked):
         with sqlite3.connect(DB_STRING) as connection:
             teamList = self.teams.getTeamList(connection)
             self.matches.addMatch(connection, team, matchNum, redAlliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, submitedById)

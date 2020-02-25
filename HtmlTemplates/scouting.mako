@@ -6,7 +6,9 @@
 <a href="/"> <button> Home </button> </a>
 
 <h1 style="text-align:center;"> Scouting </h1>
+
 </head>
+
 
 <body>
     <form action="scouted" method="post" enctype="multipart/form-data">
@@ -28,9 +30,17 @@
             <input type="radio" name="skystoneBonus" value="1">1
             <input type="radio" name="skystoneBonus" value="2">2
             <br/> <br/> <label for="stonesDelivered"> Stones delivered: </label><br/>
-            <input type="number" name="stonesDelivered" step="1" value=0 max="6" min="0">
+            <select name="stonesDelivered">
+                %for x in range(0, 7):
+                    <option value=${x}> ${x} </option>
+                %endfor
+            </select>
             <br/> <br/> <label for="autoStonesPlaced"> Stones Placed: </label> <br/>
-            <input type="number" name="autoStonesPlaced" step=1 value=0 max="6" min="0">
+            <select name="autoStonesPlaced">
+                %for x in range(0, 7):
+                    <option value=${x}> ${x} </option>
+                %endfor
+            </select>
             <br/> <br/> <label for="waffle"> Foundation: </label>
             no: <input type="radio" name="waffle" value=false checked> yes: <input type="radio" name="waffle" value=true> 
 
@@ -39,13 +49,26 @@
          </fieldset>
         <fieldset> <legend>Tele-op</legend>
             <label for="stonesDeliveredTele"> Stones delivered: </label><br/>
-            <input type="number" name="stonesDeliveredTele" step="1" value=0>
+            <select name="stonesDeliveredTele">
+                %for x in range(0, 21):
+                    <option value=${x}> ${x} </option>
+                %endfor
+            </select>
 
             <br/> <br/> <label for="stonesPlaced"> Stones placed: </label><br/>
-            <input type="number" name="stonesPlaced" step="1" value=0>
+            <select name="stonesPlaced">
+                %for x in range(0, 30):
+                    <option value=${x}> ${x} </option>
+                %endfor
+            </select>
+
 
             <br/> <br/> <label for="height"> Height Stacked: </label><br/>
-            <input type="number" name="height" step="1" value=0 min="0"> !-- it doesn't matter if they knock it down, what height did they reach?
+            <select name="height">
+                %for x in range(0, 15):
+                    <option value=${x}> ${x} </option>
+                %endfor
+            </select>
 
         </fieldset>
         <fieldset> <legend>Endgame</legend>
@@ -53,7 +76,11 @@
             no: <input type="radio" name="repositioning" value=false checked> yes: <input type="radio" name="repositioning" value=true>   
 
             <br/> <br/> <label for="capstone"> Capstone Height: </label><br/>
-            <input type="number" name="capstone" step="1" value=-1 min="-1"> !-- "-1" means no capstone
+            <select name="capstone">
+                %for x in range(0, 15):
+                    <option value=${x}> ${x} </option>
+                %endfor
+            </select> !-- "-1" means no capstone
 
             <br/><label for="parking"> Parking: </label>
             no: <input type="radio" name="parking" value=false checked> yes: <input type="radio" name="parking" value=true>   
@@ -61,7 +88,10 @@
         </fieldset>
 
         <fieldset> <legend> Other </legend>
-        <label for="notes">Notes:</label>
+        <label for="knocked"> Did they knock down a tower? </label>
+        no: <input type="radio" name="knocked" value=false checked> yes: <input type="radio" name="knocked" value=true>   
+
+        <br/><label for="notes">Notes:</label>
         <input type="textarea" name="notes">
 
         <br/><label for="penalties"> Did they cause a penalty? </label>

@@ -21,7 +21,7 @@ def getTeamRole(match):
 
 
 class Match():
-    def __init__(self, teamNum, matchNum, alliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, matchId, submitedByNum):
+    def __init__(self, teamNum, matchNum, alliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, matchId, submitedByNum, knocked):
         self.teamNum = teamNum
         self.matchNum = matchNum
         self.alliance = alliance
@@ -47,6 +47,7 @@ class Match():
         self.score = self.autoScore + self.teleOpScore + self.endGameScore
         self.blnAuto = True if self.autoScore > 0 else False
         self.role = getTeamRole(self)
+        self.knocked = True if knocked == "true" else False
 
 class Matches():
     def __init__(self):
@@ -69,32 +70,33 @@ class Matches():
             height INTEGER NOT NULL, 
             repositioning BOOLEAN NOT NULL, 
             capstone INTEGER NOT NULL, 
-            parking BOOLEAN NOT NULL, 
+            parking BOOLEAN NOT NULL,
+            knocked BOOLEAN NOT NULL, 
             notes TEXT, 
             penalties BOOLEAN NOT NULL, 
             broken BOOLEAN NOT NULL,
             submitedByNum INTEGER NOT NULL
         )""")
     
-    def addMatch(self, dbConnection, teamid, matchNum, redAlliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, submitedByNum):
+    def addMatch(self, dbConnection, teamid, matchNum, redAlliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, knocked, penalties, broken, submitedByNum):
         dbConnection.execute("""
-        INSERT INTO Matches (teamid, matchNum, alliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, submitedByNum) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-        """, (teamid, matchNum, redAlliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, submitedByNum))
+        INSERT INTO Matches (teamid, matchNum, alliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, submitedByNum, knocked) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+        """, (teamid, matchNum, redAlliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, submitedByNum, knocked))
     
     def getMatches(self, dbConnection, text, params=""):
         matchList = []
         if params:
             for row in dbConnection.execute(text, params):
-                matchList.append(Match(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13], row[14], row[15], row[16], row[17], row[18]))
+                matchList.append(Match(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13], row[14], row[15], row[16], row[17], row[18], row[19]))
         else:
             for row in dbConnection.execute(text):
-                matchList.append(Match(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13], row[14], row[15], row[16], row[17], row[18]))
+                matchList.append(Match(row[0],row[1],row[2],row[3],row[4],row[5],row[6],row[7],row[8],row[9],row[10],row[11],row[12],row[13], row[14], row[15], row[16], row[17], row[18], row[19]))
         return matchList
 
     def getAllMatches(self, dbConnection):
         text = """
         SELECT Teams.number, matchNum, alliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle,
-        autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id, submitedByNum
+        autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id, submitedByNum, knocked
         FROM Matches INNER JOIN Teams ON Matches.teamid = Teams.id ORDER BY Teams.number"""
         return self.getMatches(dbConnection, text)
 
@@ -102,7 +104,7 @@ class Matches():
         matchList = []
         text = f"""
         SELECT Teams.number, matchNum, alliance, skystoneBonus,
-        stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id, submitedByNum
+        stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, Matches.id, submitedByNum, knocked
         FROM Matches INNER JOIN Teams ON Matches.teamid = Teams.id WHERE {where} ORDER BY {orderBy}"""
         return self.getMatches(dbConnection, text)
     
@@ -141,7 +143,8 @@ class Matches():
             "autoParkedPercent":0,
             "parkedPercent":0,
             "repositioningPercent":0,
-            "avgCapstone":0
+            "avgCapstone":0,
+            "knockedPercent":0
         }
         autoTot = 0
         teleTot = 0
@@ -159,6 +162,7 @@ class Matches():
         parkedPercent = 0
         repositioningPercent = 0
         capstone = 0
+        knockedPercent = 0
         matchScores = []
         matchList = self.getSelectedMatches(dbConnection, f"teamid={teamid}", "matchNum")
         for match in matchList:
@@ -179,6 +183,7 @@ class Matches():
             parkedPercent += match.parking
             repositioningPercent += match.repositioning
             capstone += match.capstone
+            knockedPercent += match.knocked
         if totalMatches > 0:
             infoDict["avgAuto"] = round(autoTot / totalMatches, 1)
             infoDict["avgTele"] = round(teleTot / totalMatches, 1)
@@ -196,6 +201,7 @@ class Matches():
             infoDict["parkedPercent"] = round(parkedPercent / totalMatches, 1)
             infoDict["repositioningPercent"] = round(repositioningPercent / totalMatches, 1)
             infoDict["avgCapstone"] = round(capstone / totalMatches, 1)
+            infoDict["knockedPercent"] = round(knockedPercent / totalMatches, 1)
         
         return infoDict
 
