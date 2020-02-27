@@ -174,9 +174,7 @@ class Matches():
         matchNums = []
         matchList = self.getSelectedMatches(dbConnection, f"teamid={teamid}", "matchNum")
         for match in matchList:
-            if match.matchNum in matchNums:
-                pass
-            else:
+            if match.matchNum not in matchNums:
                 totalMatches += 1
                 autoTot += match.autoScore
                 teleTot += match.teleOpScore
