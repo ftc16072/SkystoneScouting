@@ -16,13 +16,18 @@
             </div>
         %endif
         <h1 style="text-align:center;">${team.teamNumber} -- ${team.teamName}</h1>
+        <h2 style="text-align:center;">Pit Number: ${team.pitNum}</h2>
     </div>
+    <%
+           def yOrn(x):
+              return "Y" if x else "N"
+        %>
 </head>
 
 <body>
     <div>
         <div style="float:Left;width:33%">
-            OPR: ${infoDict["avgAuto"] + infoDict["avgTele"] + infoDict["avgEnd"]} <br/>
+            Average Score: ${infoDict["avgAuto"] + infoDict["avgTele"] + infoDict["avgEnd"]} <br/>
             Average Auto Score: ${infoDict["avgAuto"]} <br/>
             Average TeleOp Score: ${infoDict["avgTele"]} <br/>
             Average Endgame Score: ${infoDict["avgEnd"]} <br/>
@@ -78,11 +83,11 @@
                 </td>
                 <td>
                     <table class="matches">
-                        <tr> <td> # </td> <td> round Num </td> <td> Bot was </td> <td> Auto? </td></tr>
+                        <tr style="text-align:center"> <td> # </td> <td> round Num </td> <td> Bot was </td> <td> Auto? </td><td> Knocked Tower? </td></tr>
                         <% numIncrement = 0 %>
                         %for match in matchList:
                             <% numIncrement += 1 %>
-                            <tr> <td> ${numIncrement} </td> <td> ${match.matchNum}</td> <td>${match.role} </td> <td> ${"Yes" if match.blnAuto else "No"}</td>
+                            <tr style="text-align:center;"> <td> ${numIncrement} </td> <td> ${match.matchNum}</td> <td>${match.role} </td> <td> ${"Yes" if match.blnAuto else "No"}</td> <td> ${"Yes" if match.knocked else "No"} </td>
                         %endfor
                     </table>
                 </td>
@@ -92,11 +97,7 @@
     <table class="matches">
         <tr class="heading"> <td> scouting form # </td> <td> Match #</td><td>Alliance</td> <td> Team #</td><td>skystoneBonus</td> <td>stonesDelivered</td> 
         <td>auto stones placed:</td><td>waffle</td><td>autoPark</td><td>teleStnsDliver</td><td>stonesPlaced</td><td> height</td><td>repositioning</td>
-        <td>capstone</td><td>parking</td><td>notes</td><td>penalties</td><td>broken</td><td>Submited By:</td>
-        <%
-           def yOrn(x):
-              return "Y" if x else "N"
-        %>
+        <td>capstone</td><td>parking</td><td>Knocked</td><td>notes</td><td>penalties</td><td>broken</td><td>Submited By:</td>
         %for match in matchList:
             <tr>
                 <td>${match.matchId}</td>
@@ -118,6 +119,7 @@
                 <td>${yOrn(match.repositioning)}</td>
                 <td>${match.capstone}</td>
                 <td>${yOrn(match.parking)}</td>
+                <td>${yOrn(match.knocked)}</td>
                 <td>${match.notes}</td>
                 <td>${yOrn(match.penalties)}</td>
                 <td>${yOrn(match.broken)}</td>
