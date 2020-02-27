@@ -7,9 +7,23 @@
 </head>
 
 <body>
+    <h4 style="text-align:center">
+        This page was built by 16072 -- The Quantum Quacks <br/>
+    </h4>
+    <fieldset>
+    <legend> Disclaimer </legend>
+    <p>
+        All of the data here is only as accurate as it can be for 5 or less matches of data. <br/>
+        This data is entered by <b><i>Humans</i></b> this means that not all of the data is 100% accurate <br/>
+        If you are detail oriented and would like to help keep this data accurate for teams, please consider scouting for some matches. <br/>
+        If you are interested, Find Rishi from Quantum Quacks.
+    </p>
+    </fieldset>
   <table>
         <tr>
             <td> <a href="/present"> <button> All data </button> </a>
+        </tr>
+        <tr style="height:10px">
         </tr>
         <tr> 
             </td> <td>View Team Page:<td/>
@@ -20,7 +34,7 @@
                 %endfor
             <input type="submit"> </form>
         </tr>
-    </table>
+    </table> <br/>
             <form  action="getData" method="post" enctype="multipart/form-data">
                      <select name="fieldName">
                         %for field in fieldList:
