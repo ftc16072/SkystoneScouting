@@ -13,7 +13,8 @@
 % else:
 <body class="Print">
 % endif
-    ${self.body()}
+${self.body()} 
+<hr/> <center><img src="static/outlined_with_text-X2.png" alt="Quantum Quacks Logo" height=200></center>
 
 </body>
 
