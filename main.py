@@ -46,7 +46,7 @@ class Scouting(object):
     def scouted(self, team, matchNum, redAlliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, submitedById, knocked):
         with sqlite3.connect(DB_STRING) as connection:
             teamList = self.teams.getTeamList(connection)
-            self.matches.addMatch(connection, team, matchNum, redAlliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, penalties, broken, submitedById)
+            self.matches.addMatch(connection, team, matchNum, redAlliance, skystoneBonus, stonesDelivered, autoStonesPlaced, waffle, autoPark, stonesDeliveredTele, stonesPlaced, height, repositioning, capstone, parking, notes, knocked, penalties, broken, submitedById)
             
         return self.template('scouting.mako', teamList=teamList, startingMatchNum=int(matchNum)+1)
 
@@ -89,6 +89,24 @@ class Scouting(object):
             matchList = self.matches.getSelectedMatches(connection, f"Teams.number={team.teamNumber}", "matchNum")
         return self.template('teamPage.mako', matchList=matchList, team=team, broken=broken, penalised=penalised, infoDict=infoDict, matchBar=matchBar)
     
+    @cherrypy.expose
+    def matchSimulationLanding(self):
+        with sqlite3.connect(DB_STRING) as connection:
+            teamList = self.teams.getTeamList(connection)
+        return self.template("landingPage.mako", teamList=teamList)
+
+    @cherrypy.expose
+    def matchSim(self, red1, red2, blue1, blue2):
+        teamDict = {}
+        with sqlite3.connect(DB_STRING) as connection:
+            teamDict["red1"] = self.matches.getTeamInfo(connection, red1)
+            teamDict["red2"] = self.matches.getTeamInfo(connection, red2)
+            teamDict["blue1"] = self.matches.getTeamInfo(connection, blue1)
+            teamDict["blue2"] = self.matches.getTeamInfo(connection, blue2)
+
+        return self.template("matchSim.mako", teamDict)
+
+
 
 
 if __name__ == "__main__":
