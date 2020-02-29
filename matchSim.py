@@ -90,7 +90,12 @@ class MatchSim():
             if team1Dict["avgTeleBlocks"] >= team2Dict["avgTeleBlocks"] and team1Dict["avgTeleBlocks"] > 0:
                 team1Role += 2                
             elif team2Dict["avgTeleBlocks"]:
-                team2Role += 2                
+                team2Role += 2
+            if team1Role == 1 and team2Dict["avgBlocksDeliverdFerryMatches"] < team1Dict["avgPlacedStackingMatches"]:
+                team1Role += 2
+            elif team2Role == 1 and team1Dict["avgBlocksDeliverdFerryMatches"] < team2Dict["avgPlacedStackingMatches"]:
+                team2Role += 2
+                                   
         if blocksplaced == 0 and team1Role == 3:
             blocksplaced = team1Dict["avgBlocksPlaceBoth"]
             height = team1Dict["avgHeightBoth"]
