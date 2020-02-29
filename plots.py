@@ -37,6 +37,8 @@ class Plots():
             print("******")
             print(j,i)
             ax.bar(j, i, width=0.4)
+        ax.set_xlabel("Match Num")
+        ax.set_ylabel("Points")
         return self.saveAsPng(fig)
 
     
