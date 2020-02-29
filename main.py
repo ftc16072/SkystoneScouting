@@ -7,6 +7,7 @@ from matplotlib.pyplot import Figure
 from mako.lookup import TemplateLookup
 from teams import Team, Teams
 from matches import Match, Matches
+from matchSim import MatchSim, Auto
 from plots import Plots
 
 DB_STRING = os.path.join(os.path.dirname(__file__), 'data/database.sqlite3')
@@ -97,14 +98,9 @@ class Scouting(object):
 
     @cherrypy.expose
     def matchSim(self, red1, red2, blue1, blue2):
-        teamDict = {}
         with sqlite3.connect(DB_STRING) as connection:
-            teamDict["red1"] = self.matches.getTeamInfo(connection, red1)
-            teamDict["red2"] = self.matches.getTeamInfo(connection, red2)
-            teamDict["blue1"] = self.matches.getTeamInfo(connection, blue1)
-            teamDict["blue2"] = self.matches.getTeamInfo(connection, blue2)
-
-        return self.template("matchSim.mako", teamDict)
+            matchSim = MatchSim(red1, red2, blue1, blue2, connection)
+        return self.template("matchSim.mako", matchSim=matchSim)
 
 
 

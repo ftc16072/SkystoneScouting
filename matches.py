@@ -20,7 +20,7 @@ def getTeamRole(match):
         else:
             role = "Stacking"
     else:
-        role = f"inconclusive stacking:{stacking} ferried:{ferried}"
+        role = f"Inconclusive"
     return role
     
 
@@ -150,12 +150,18 @@ class Matches():
             "repositioningPercent":0,
             "avgCapstone":0,
             "knockedPercent":0,
+            "avgBlocksDelBoth":0,
+            "avgBlocksPlaceBoth":0,
+            "avgHeightBoth":0,
             "roles":[]
         }
         autoTot = 0
         teleTot = 0
         endTot = 0
         brokenTot = 0
+        teleBlockFerrying = 0
+        teleHeightStacking = 0
+        telePlacedStacking = 0
         totalMatches = 0
         TeleBlocks = 0
         height = 0
@@ -169,6 +175,9 @@ class Matches():
         repositioningPercent = 0
         capstone = 0
         knockedPercent = 0
+        teleBlockBoth = 0
+        teleHeightBoth = 0
+        telePlacedBoth = 0
         matchScores = []
         roles = []
         matchNums = []
@@ -194,6 +203,12 @@ class Matches():
                 capstone += match.capstone
                 knockedPercent += match.knocked
                 roles.append(match.role)
+                teleBlockFerrying += match.stonesDeliveredTele if match.role == "Ferrying" else 0
+                teleHeightStacking += match.height if match.role == "Stacking" else 0
+                telePlacedStacking += match.stonesPlaced if match.role == "Stacking" else 0
+                teleBlockBoth += match.stonesDeliveredTele if match.role == "Ferrying" else 0
+                teleHeightBoth += match.height if match.role == "Stacking" else 0
+                telePlacedBoth += match.stonesPlaced if match.role == "Stacking" else 0
                 matchNums.append(match.matchNum)
         if totalMatches > 0:
             infoDict["avgAuto"] = round(autoTot / totalMatches, 1)
@@ -213,6 +228,12 @@ class Matches():
             infoDict["repositioningPercent"] = round(repositioningPercent / totalMatches, 1)
             infoDict["avgCapstone"] = round(capstone / totalMatches, 1)
             infoDict["knockedPercent"] = round(knockedPercent / totalMatches, 1)
+            infoDict["avgBlocksDeliverdFerryMatches"] = round(teleBlockFerrying / roles.count("Ferrying"), 1) if roles.count("Ferrying") > 0 else 0
+            infoDict["avgHeightStackingMatches"] = round(teleHeightStacking / roles.count("Stacking"), 1) if roles.count("Stacking") > 0 else 0
+            infoDict["avgPlacedStackingMatches"] = round(telePlacedStacking / roles.count("Stacking"),1) if roles.count("Stacking") > 0 else 0
+            infoDict["avgBlocksDelBoth"] = round(teleBlockBoth / roles.count("Both"),1) if roles.count("Both") > 0 else 0
+            infoDict["avgBlocksPlaceBoth"] = round(telePlacedBoth / roles.count("Both"),1) if roles.count("Both") > 0 else 0
+            infoDict["avgHeightBoth"] = round(teleHeightBoth / roles.count("Both"),1) if roles.count("Both") > 0 else 0
         
         return infoDict
 
