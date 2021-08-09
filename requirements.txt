@@ -22,7 +22,7 @@ pylint==2.3.1
 python-dateutil==2.8.0
 python-ev3dev2==2.0.0b3
 pytz==2019.3
-pywin32==227
+pywin32==301
 requests==2.21.0
 requests-toolbelt==0.9.1
 six==1.12.0
